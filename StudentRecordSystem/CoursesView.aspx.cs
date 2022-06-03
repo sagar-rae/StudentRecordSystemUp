@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Text;
+using System.Web.Services;
 
 namespace StudentRecordSystem
 {
@@ -38,7 +39,9 @@ namespace StudentRecordSystem
                             table.Append("<tr>");
                             table.Append("<td>" + dr[0] + "</td>");
                             table.Append("<td>" + dr[1] + "</td>");
-                            table.Append("<td><input type='button' class='btn btn-outline-danger' value='Delete'/></td>");
+
+                            table.Append("<td><input type='button' class='btn btn-outline-danger dltBtn' value='Delete' onclick='test(\"" + dr[0].ToString() + "\")'/></td>");
+                            //table.Append("<td><asp:Button runat='server' class='btn btn-outline-danger DelBtn' OnClick='Unnamed_Click()' Text='Delete' /></td>");
                             table.Append("</tr>");
                         }
                     }
@@ -56,6 +59,11 @@ namespace StudentRecordSystem
             {
                 con.Close();
             }
+        }
+
+        protected void Unnamed_Click(object sender, EventArgs e)
+        {
+            Response.Write("<script>alert('testing')</script>");
         }
         //void LoadData()
         //{
@@ -97,5 +105,32 @@ namespace StudentRecordSystem
         //        con.Close();
         //    }
         //}
+      [WebMethod]
+        public static string DeleteFunc(int i)
+        {
+            string strcon = ConfigurationManager.ConnectionStrings["MGMTDB"].ConnectionString;
+            SqlConnection con = new SqlConnection(strcon);
+            con.Open();
+            SqlCommand com = new SqlCommand("MGMTSP", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@Flag","DeleteCourse");
+            com.Parameters.AddWithValue("@AName",i);
+            int check = com.ExecuteNonQuery();
+            if (check > 0)
+            {
+                con.Close();
+                var msg = "Successfully deleted.";
+                return msg;
+                
+            }
+            else
+            {
+                con.Close();
+                var errMsg = "Error";
+                return errMsg;
+            }
+
+           
+        }
     }
 }
