@@ -2,25 +2,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript">     
-
-        //window.onload = function () {
-        //    document.getElementById('ShowSubject').style.display = "block";
-        //};
-       
-        //function checkcheck() {
-
-        //    document.getElementById('ShowSubject').style.display = "none";
-        //}
-
-        //function Check() {
-        //    document.getElementById('ShowSubject').style.display = "block";
-        //}
-
-
-       
-        //$(document).ready(function () {
-        //    $('#ShowSubject').css('display', 'none');
-        //});
       
 
     </script>

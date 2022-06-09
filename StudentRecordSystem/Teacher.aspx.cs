@@ -39,36 +39,37 @@ namespace StudentRecordSystem
         }
         void DropSubjectDataBind()
         {
-           
-            SqlConnection con = new SqlConnection(strcon);
-            SqlDataAdapter sda = new SqlDataAdapter("MGMTSP", con);
-            sda.SelectCommand.CommandType = CommandType.StoredProcedure;
-            sda.SelectCommand.Parameters.AddWithValue("@Flag", "DropDownBindSubject");
-            sda.SelectCommand.Parameters.AddWithValue("@CourseId",DrpListId.SelectedValue);
-            DataTable data = new DataTable();
-            sda.Fill(data);
-            DropList2Id.DataSource = data;
-            DropList2Id.DataTextField = "Sub1";
-            DropList2Id.DataValueField = "Sub1";
-            DropList2Id.DataBind();
 
-          
-            //SqlCommand com = new SqlCommand("MGMTSP", con);
-            //com.CommandType = CommandType.StoredProcedure;
-            //com.Parameters.AddWithValue("@Flag", "DropDownBindSubject");
-            //com.Parameters.AddWithValue("@CourseId", DrpListId.SelectedValue);
-            //con.Open();
-            //SqlDataReader dr = com.ExecuteReader();
-            //if(dr.HasRows)
-            //{
-            //    while(dr.Read())
-            //    {
-            //        DropList2Id.DataSource = dr;
-            //        DropList2Id.DataBind();
-            //    }
-            //}
-            //dr.Close();
-            //con.Close();
+            //SqlConnection con = new SqlConnection(strcon);
+            //SqlDataAdapter sda = new SqlDataAdapter("MGMTSP", con);
+            //sda.SelectCommand.CommandType = CommandType.StoredProcedure;
+            //sda.SelectCommand.Parameters.AddWithValue("@Flag", "DropDownBindSubject");
+            //sda.SelectCommand.Parameters.AddWithValue("@CourseId",DrpListId.SelectedValue);
+            //DataTable data = new DataTable();
+            //sda.Fill(data);
+            //DropList2Id.DataSource = data;
+            //DropList2Id.DataTextField = "Sub1";
+            //DropList2Id.DataValueField = "Sub1";
+            //DropList2Id.DataBind();
+
+            SqlConnection con = new SqlConnection(strcon);
+            SqlCommand com = new SqlCommand("MGMTSP", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@Flag", "DropDownBindSubject");
+            com.Parameters.AddWithValue("@CourseId", DrpListId.SelectedValue);
+            con.Open();
+            var cars = new string[] { "Volvo", "BMW", "Ford" };
+            SqlDataReader dr = com.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    DropList2Id.DataSource = cars;
+                    //DropList2Id.DataBind();
+                }
+            }
+            dr.Close();
+            con.Close();
 
         }
         protected void Submit_Click(object sender, EventArgs e)

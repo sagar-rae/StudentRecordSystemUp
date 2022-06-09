@@ -21,16 +21,36 @@ namespace StudentRecordSystem
                 ShowSubject.Visible = false;
                 DropListDataBind();
             }
-            else
-            {
-                ShowSubject.Visible = true;
-            }
+            //else
+            //{
+            //    ShowSubject.Visible = true;
+            //}
         }
 
         protected void Search_Click(object sender, EventArgs e)
         {
             LoadSubject();
-            //GetResult();
+            CheckUser();
+        }
+
+        void CheckUser()
+        {
+            SqlConnection con = new SqlConnection(strcon);
+            con.Open();
+            SqlCommand com = new SqlCommand("MGMTSP", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@Flag","CheckUser");
+            com.Parameters.AddWithValue("@StudentId",StdRegId.Value);
+            com.Parameters.AddWithValue("@AName",DrpListId.SelectedValue);
+            SqlDataReader dr = com.ExecuteReader();
+            if(dr.HasRows)
+            {
+                ShowSubject.Visible = true;
+            }
+            else
+            {
+                Response.Write("<script>alert('Student not found of that details.')</script>");
+            }
         }
 
         void LoadSubject()
@@ -56,30 +76,7 @@ namespace StudentRecordSystem
             con.Close();         
         }
 
-        //void GetResult()
-        //{
-        //    SqlConnection con = null;
-        //    try
-        //    {               
-        //       using(con = new SqlConnection(strcon))
-        //        {
-        //            con.Open();
-        //            SqlCommand com = new SqlCommand("MGMTSP", con);
-        //            com.CommandType = CommandType.StoredProcedure;
-        //            com.Parameters.AddWithValue("@Flag","InsertResult");
-        //            com.Parameters.AddWithValue("@Sub1","");
-        //        }
-
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Response.Write("<script>alert('"+ex.Message+"')</script>");
-        //    }
-        //    finally
-        //    {
-        //        con.Close();
-        //    }
-        //}
+      
 
         void DropListDataBind()
         {
@@ -95,7 +92,7 @@ namespace StudentRecordSystem
             DrpListId.DataBind();
         }
 
-        protected void Submit_Click(object sender, EventArgs e)
+        void InsertResult()
         {
             SqlConnection con = null;
             try
@@ -124,14 +121,20 @@ namespace StudentRecordSystem
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Response.Write("<script>alert('"+ex.Message+"')</script>");
+                Response.Write("<script>alert('" + ex.Message + "')</script>");
             }
             finally
             {
                 con.Close();
             }
+        }
+
+        protected void Submit_Click(object sender, EventArgs e)
+        {
+            InsertResult();
+
         }
     }
 }

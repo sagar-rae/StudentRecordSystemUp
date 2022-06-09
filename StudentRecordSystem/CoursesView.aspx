@@ -1,12 +1,24 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="CoursesView.aspx.cs" Inherits="StudentRecordSystem.WebForm4" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript">
+        function test(ex) {
+           
+            var jsondata = { id: ex };
+           $.ajax({
+                    url: 'CoursesView.aspx/DeleteFunc',
+                         type: 'Post',
+                         data: JSON.stringify(jsondata),
+                    contentType: 'application/json; charset=utf - 8',
+                    dataType: 'json',
+                    success: function (responce) {
+                        alert(responce.d);
+                    },      
+                    failure: function() {
+                         alert('Failed');
+                    }
+                    });          
+        }
        
-        //$(document).ready(function () {
-        //    $('.delete_btn').on('click', function () {
-        //        debugger;
-        //    })
-        //});
 </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
